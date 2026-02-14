@@ -1,0 +1,16 @@
+{
+
+  "servers": {
+
+    "ecommerce-mcp": {
+
+      "type": "http",
+
+      "url": "http://localhost:5201/mcp"
+
+    }
+
+  }
+
+}
+ 
