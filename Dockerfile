@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["GetProductsUsingMCP.csproj", "."]
-RUN dotnet restore "./GetProductsUsingMCP.csproj"
+RUN dotnet restore "./GetProductsUsingMCP.csproj" -r linux-x64
 COPY . .
 WORKDIR "/src/."
 RUN dotnet build "./GetProductsUsingMCP.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -21,7 +21,7 @@ RUN dotnet build "./GetProductsUsingMCP.csproj" -c $BUILD_CONFIGURATION -o /app/
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GetProductsUsingMCP.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GetProductsUsingMCP.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r linux-x64 --no-self-contained /p:PublishSingleFile=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
